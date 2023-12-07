@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(Exercise4)
+project(Exercise5)
 
 include(FetchContent)
 
@@ -13,10 +13,11 @@ FetchContent_Declare(systemc
 
 FetchContent_MakeAvailable(systemc)
 
-add_executable(exercise4
+add_executable(exercise5
     main.cpp
+    kpn.cpp
 )
 
-target_link_libraries(exercise4
+target_link_libraries(exercise5
     SystemC::systemc
 )
