@@ -23,6 +23,6 @@ add_executable(exercise6
     stimuli2.txt
 )
 
-target_link_libraries(exercise5
+target_link_libraries(exercise6
     SystemC::systemc
 )
