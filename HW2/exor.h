@@ -1,5 +1,5 @@
 #pragma once
 
-#include <systemc>
+#include "nand.h"
 
 // TODO: Insert your code here

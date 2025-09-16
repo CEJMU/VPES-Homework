@@ -1,5 +1,8 @@
-#include <systemc.h>
 #include "nand.h"
+
+#include <format>
+
+using namespace sc_core;
 
 SC_MODULE(toplevel)
 {
@@ -51,7 +54,14 @@ private:
 
         // This is the first message that is printed when the process is
         // executed.
-        std::cout << "SC_METHOD process() trigger counter " << cnt << " simulation time " << sc_time_stamp().to_default_time_units() << " ps Δ cycle " << sc_delta_count() << ":\tA " << (A.read() ? "'1'" : "'0'") << " B " << (B.read() ? "'1'" : "'0'") << " Z " << (Z.read() ? "'1'" : "'0'") << std::endl;
+        std::cout << std::format("SC_METHOD process() trigger counter {} simulation time {} ps Δ "
+                                 "cycle {}:\tA '{:d}' B '{:d}' Z '{:d}'\n",
+                                 cnt,
+                                 sc_time_stamp().to_default_time_units(),
+                                 sc_delta_count(),
+                                 A.read(),
+                                 B.read(),
+                                 Z.read());
 
         // Here both signals A and B are set to true.
         A.write(true);
@@ -59,7 +69,14 @@ private:
 
         // This is the second message that is printed when the process is
         // executed.
-        std::cout << "SC_METHOD process() trigger counter " << cnt << " simulation time " << sc_time_stamp().to_default_time_units() << " ps Δ cycle " << sc_delta_count() << ":\tA " << (A.read() ? "'1'" : "'0'") << " B " << (B.read() ? "'1'" : "'0'") << " Z " << (Z.read() ? "'1'" : "'0'") << std::endl;
+        std::cout << std::format("SC_METHOD process() trigger counter {} simulation time {} ps Δ "
+                                 "cycle {}:\tA '{:d}' B '{:d}' Z '{:d}'\n",
+                                 cnt,
+                                 sc_time_stamp().to_default_time_units(),
+                                 sc_delta_count(),
+                                 A.read(),
+                                 B.read(),
+                                 Z.read());
 
         // Uncomment the lines below where signals A and B are modified.
         // Check the output messages in the terminal and try to understand
@@ -69,12 +86,12 @@ private:
         //  - Is the process triggered when Z changes?
         //  - Are some of the writes to A and B ignored?
 
-        //A.write(false);
-        //B.write(false);
-        //A.write(true);
-        //B.write(false);
-        //A.write(false);
-        //B.write(true);
+        // A.write(false);
+        // B.write(false);
+        // A.write(true);
+        // B.write(false);
+        // A.write(false);
+        // B.write(true);
 
         // Print a new line
         std::cout << std::endl;
@@ -93,4 +110,3 @@ int sc_main(int, char**)
     // Return zero after the end of the simulation.
     return 0;
 }
-

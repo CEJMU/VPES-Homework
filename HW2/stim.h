@@ -1,39 +1,36 @@
-#ifndef STIMULUS_H
-#define STIMULUS_H
+#pragma once
 
-#include <systemc.h>
+#include <systemc>
 
 SC_MODULE(stim)
 {
 public:
-    sc_out<bool> A, B;
+    sc_core::sc_out<bool> A, B;
 
     SC_CTOR(stim)
     {
-        SC_THREAD(StimGen);
+        SC_THREAD(stim_gen);
     }
 
 private:
-    void StimGen()
+    void stim_gen()
     {
-        wait(SC_ZERO_TIME);
+        wait(sc_core::SC_ZERO_TIME);
         A.write(false);
         B.write(false);
-        wait(10, SC_NS);
+        wait(10, sc_core::SC_NS);
         A.write(false);
         B.write(true);
-        wait(15, SC_NS);
+        wait(15, sc_core::SC_NS);
         A.write(true);
         B.write(false);
-        wait(10, SC_NS);
+        wait(10, sc_core::SC_NS);
         A.write(true);
         B.write(true);
-        wait(10, SC_NS);
+        wait(10, sc_core::SC_NS);
         A.write(false);
         B.write(false);
-        wait(10, SC_NS);
-        sc_stop();
+        wait(10, sc_core::SC_NS);
+        sc_core::sc_stop();
     }
 };
-
-#endif

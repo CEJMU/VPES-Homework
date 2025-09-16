@@ -1,17 +1,17 @@
-#ifndef MONITOR_H
-#define MONITOR_H
+#pragma once
 
+#include <format>
 #include <iostream>
-#include <systemc.h>
+#include <systemc>
 
 SC_MODULE(Monitor)
 {
 public:
-    sc_in<bool> A, B, Z;
+    sc_core::sc_in<bool> A, B, Z;
 
     SC_CTOR(Monitor)
     {
-        std::cout << std::endl <<  "time\tA\tB\tF" << std::endl;
+        std::cout << "time\tA\tB\tF\n";
         SC_METHOD(monitor);
         sensitive << A << B << Z;
         dont_initialize();
@@ -20,8 +20,10 @@ public:
 private:
     void monitor()
     {
-        std::cout << sc_time_stamp()  << "\t" << A << "\t" << B << "\t" << Z << std::endl;
+        std::cout << std::format("{}\t{:d}\t{:d}\t{:d}\n",
+                                 sc_core::sc_time_stamp().to_default_time_units(),
+                                 A.read(),
+                                 B.read(),
+                                 Z.read());
     }
 };
-
-#endif

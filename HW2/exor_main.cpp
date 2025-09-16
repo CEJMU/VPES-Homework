@@ -1,8 +1,10 @@
-#include <systemc.h>
-
+#include "exor.h"
 #include "stim.h"
-#include "xor.h"
 #include "mon.h"
+
+#include <systemc>
+
+using namespace sc_core;
 
 int sc_main(int, char**)
 {
@@ -22,7 +24,6 @@ int sc_main(int, char**)
     mon.B(sigB);
     mon.Z(sigZ);
 
-    sc_start();  // run forever
-
+    sc_start();
     return 0;
 }

@@ -13,7 +13,7 @@ FetchContent_Declare(systemc
 set(DISABLE_COPYRIGHT_MESSAGE TRUE)
 FetchContent_MakeAvailable(systemc)
 
-# add_subdirectory(HW2)
+add_subdirectory(HW2)
 # add_subdirectory(HW3)
 # add_subdirectory(HW4)
 # add_subdirectory(HW5)
