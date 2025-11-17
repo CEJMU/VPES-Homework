@@ -1,5 +1,5 @@
 #include <unistd.h>
-#include <systemc.h>
+#include <systemc>
 
 #include "kpn.h"
 

@@ -44,7 +44,6 @@ protected:
     std::queue<tlm::tlm_generic_payload*> responseQueue;
 
 public:
-    SC_HAS_PROCESS(Target);
     Target(sc_module_name name, unsigned int bufferSize = 8) : sc_module(name),
         tSocket("tSocket"),
         responseInProgress(false),

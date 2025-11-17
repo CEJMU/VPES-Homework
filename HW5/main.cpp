@@ -1,9 +1,11 @@
 #include <iostream>
-#include <systemc.h>
+#include <systemc>
 
 #include "kpn.h"
 
-int sc_main(int, char**)
+using namespace sc_core;
+
+int sc_main(int argc, char** argv)
 {
     kpn kahn("kpn");
     sc_start();

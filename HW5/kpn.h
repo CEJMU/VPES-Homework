@@ -1,7 +1,6 @@
-#ifndef KPN_H
-#define KPN_H
+#pragma once
 
-#include <systemc.h>
+#include <systemc>
 
 SC_MODULE(kpn)
 {
@@ -14,5 +13,3 @@ public:
         // ADD THINGS HERE
     }
 };
-
-#endif // KPN_H

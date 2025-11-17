@@ -25,8 +25,6 @@ public:
 
 	processor(sc_module_name, std::string pathToTrace, sc_time cycleTime);
 
-	SC_HAS_PROCESS(processor);
-
 	// Dummy method:
 	void invalidate_direct_mem_ptr(sc_dt::uint64 start_range,
 			sc_dt::uint64 end_range)
