@@ -6,7 +6,7 @@
 
 using namespace sc_core;
 
-int sc_main(int, char**)
+int sc_main(int argc, char** argv)
 {
     sc_signal<bool> sigA, sigB, sigZ;
 

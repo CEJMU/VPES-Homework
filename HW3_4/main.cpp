@@ -9,7 +9,7 @@ using namespace sc_core;
 // Toplevel:
 // TODO
 
-int sc_main(int, char**)
+int sc_main(int argc, char** argv)
 {
     // TODO
 

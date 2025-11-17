@@ -98,7 +98,7 @@ private:
     }
 };
 
-int sc_main(int, char**)
+int sc_main(int argc, char** argv)
 {
     // The toplevel module is instantiated here. Its constructor will be
     // called.
