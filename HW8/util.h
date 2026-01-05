@@ -31,15 +31,12 @@
  *     - Matthias Jung
  */
 
-#ifndef UTIL_H
-#define UTIL_H
+#pragma once
 
-#include <systemc.h>
+#include <systemc>
 
-sc_time randomDelay()
+inline sc_core::sc_time randomDelay()
 {
     unsigned int nanoseconds = rand() % 1000;
-    return sc_time(nanoseconds, SC_NS);
+    return sc_core::sc_time(nanoseconds, sc_core::SC_NS);
 }
-
-#endif // UTIL_H

@@ -33,17 +33,14 @@
 
 #include <iostream>
 #include <iomanip>
-#include <map>
-#include <queue>
 
-#include <systemc.h>
-#include <tlm.h>
+#include <systemc>
+#include <tlm>
 
 // Convenience Sockets:
 #include <tlm_utils/multi_passthrough_initiator_socket.h>
 #include <tlm_utils/multi_passthrough_target_socket.h>
 
-#include "memory_manager.h"
 #include "initiator.h"
 #include "target.h"
 #include "tlm2_base_protocol_checker.h"
@@ -61,7 +58,7 @@ public:
                                      outputPortNumber(o)
     {
         cout << "\033[1;36m(E"
-             << ") @"  << setfill(' ') << setw(12) << sc_time_stamp()
+             << ") @"  << setfill(' ') << setw(12) << sc_core::sc_time_stamp()
              << ": Extension Created = "
              << "  inPort = " << dec << setfill(' ') << setw(2) << i
              << " outPort = " << dec << setfill(' ') << setw(2) << o
@@ -140,7 +137,7 @@ private:
 
     virtual void b_transport(int id,
                              tlm::tlm_generic_payload &trans,
-                             sc_time &delay)
+                             sc_core::sc_time &delay)
     {
         int outPort = routeFW(id, trans, false);
         iSocket[outPort]->b_transport(trans, delay);
@@ -150,7 +147,7 @@ private:
     virtual tlm::tlm_sync_enum nb_transport_fw(int id,
                                                tlm::tlm_generic_payload &trans,
                                                tlm::tlm_phase &phase,
-                                               sc_time &delay)
+                                               sc_core::sc_time &delay)
     {
         int outPort = 0;
 
@@ -183,7 +180,7 @@ private:
 
         cout << "\033[1;37m("
              << name()
-             << ")@"  << setfill(' ') << setw(12) << sc_time_stamp()
+             << ")@"  << setfill(' ') << setw(12) << sc_core::sc_time_stamp()
              << ": Addr = " << setfill('0') << setw(8)
              << dec << trans.get_address()
              << "  inPort = " << dec << setfill(' ') << setw(2) << id
@@ -199,7 +196,7 @@ private:
     virtual tlm::tlm_sync_enum nb_transport_bw(int id,
                                                tlm::tlm_generic_payload &trans,
                                                tlm::tlm_phase &phase,
-                                               sc_time &delay)
+                                               sc_core::sc_time &delay)
     {
         routingExtension *ext = nullptr;
         trans.get_extension(ext);
@@ -222,7 +219,7 @@ int sc_main (int, char **)
     bus->iSocket.bind(memory1->tSocket);
     bus->iSocket.bind(memory2->tSocket);
 
-    sc_start();
+    sc_core::sc_start();
 
     return 0;
 }

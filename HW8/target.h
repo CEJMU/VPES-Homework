@@ -1,13 +1,11 @@
-#ifndef TARGET_H
-#define TARGET_H
+#pragma once
 
 #include <iostream>
 #include <iomanip>
-#include <map>
 #include <queue>
 
-#include <systemc.h>
-#include <tlm.h>
+#include <systemc>
+#include <tlm>
 
 // Convenience Sockets:
 #include <tlm_utils/simple_initiator_socket.h>
@@ -17,10 +15,6 @@
 
 // PEQ:
 #include <tlm_utils/peq_with_cb_and_phase.h>
-
-// MM and tools:
-#include "memory_manager.h"
-#include "util.h"
 
 // Internal Phase for transaction processing:
 DECLARE_EXTENDED_PHASE(INTERNAL);
@@ -44,7 +38,7 @@ protected:
     std::queue<tlm::tlm_generic_payload*> responseQueue;
 
 public:
-    Target(sc_module_name name, unsigned int bufferSize = 8) : sc_module(name),
+    Target(sc_core::sc_module_name name, unsigned int bufferSize = 8) : sc_module(name),
         tSocket("tSocket"),
         responseInProgress(false),
         endRequestPending(nullptr),
@@ -60,7 +54,7 @@ public:
     {
         std::cout << "\033[1;35m("
                   << name()
-                  << ")@"  << setfill(' ') << setw(12) << sc_time_stamp()
+                  << ")@"  << setfill(' ') << setw(12) << sc_core::sc_time_stamp()
                   << " Target Buffer: "
                   << "[";
         for (unsigned int i = 0; i < n; i++) {
@@ -77,7 +71,7 @@ public:
     }
 
     virtual void b_transport(tlm::tlm_generic_payload& trans,
-                             sc_time& delay)
+                             sc_core::sc_time& delay)
     {
         executeTransaction(trans);
     }
@@ -85,7 +79,7 @@ public:
     // [1.0, 1.6]
     virtual tlm::tlm_sync_enum nb_transport_fw(tlm::tlm_generic_payload& trans,
                                                tlm::tlm_phase& phase,
-                                               sc_time& delay)
+                                               sc_core::sc_time& delay)
     {
         // Queue the transaction into the peq until
         // the annotated time has elapsed
@@ -97,7 +91,7 @@ public:
     void peqCallback(tlm::tlm_generic_payload& trans,
                      const tlm::tlm_phase& phase)
     {
-        sc_time delay;
+        sc_core::sc_time delay;
 
         if(phase == tlm::BEGIN_REQ) // [1.0]
         {
@@ -172,11 +166,11 @@ public:
     void sendEndRequest(tlm::tlm_generic_payload& trans)
     {
         tlm::tlm_phase bw_phase;
-        sc_time delay;
+        sc_core::sc_time delay;
 
         // Queue the acceptance and the response with the appropriate latency
         bw_phase = tlm::END_REQ;
-        delay = sc_time(10, SC_NS); // Accept delay
+        delay = sc_core::sc_time(10, sc_core::SC_NS); // Accept delay
 
         tlm::tlm_sync_enum status;
         status = tSocket->nb_transport_bw(trans, bw_phase, delay); // [1.2]
@@ -184,7 +178,7 @@ public:
         // initiator cannot terminate transaction at this point
 
         // Queue internal event to mark beginning of response
-        delay = delay + sc_time(40, SC_NS);//randomDelay(); // Latency
+        delay = delay + sc_core::sc_time(40, sc_core::SC_NS);//randomDelay(); // Latency
         peq.notify(trans, INTERNAL, delay);
 
         numberOfTransactions++;
@@ -230,7 +224,7 @@ public:
 
         cout << "\033[1;32m("
              << name()
-             << ")@"  << setfill(' ') << setw(12) << sc_time_stamp()
+             << ")@"  << setfill(' ') << setw(12) << sc_core::sc_time_stamp()
              << ": " << setw(12) << (cmd ? "Exec. Write " : "Exec. Read ")
              << "Addr = " << setfill('0') << setw(8) << dec << adr
              << " Data = " << "0x" << setfill('0') << setw(8) << hex
@@ -244,13 +238,13 @@ public:
     {
         tlm::tlm_sync_enum status;
         tlm::tlm_phase bw_phase;
-        sc_time delay;
+        sc_core::sc_time delay;
 
         sc_assert(responseInProgress == false);
 
         responseInProgress = true;
         bw_phase = tlm::BEGIN_RESP;
-        delay = SC_ZERO_TIME;
+        delay = sc_core::SC_ZERO_TIME;
         status = tSocket->nb_transport_bw( trans, bw_phase, delay ); // [1.4]
 
         if (status == tlm::TLM_UPDATED) // [2.1]
@@ -268,5 +262,3 @@ public:
         trans.release();
     }
 };
-
-#endif // TARGET_H

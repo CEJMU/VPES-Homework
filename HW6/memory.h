@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include <tlm.h>
-#include <systemc.h>
+#include <systemc>
+#include <tlm>
 
 // TODO: add your code here

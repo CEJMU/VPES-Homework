@@ -1,13 +1,10 @@
-#ifndef INITIATOR_H
-#define INITIATOR_H
+#pragma once
 
 #include <iostream>
 #include <iomanip>
-#include <map>
-#include <queue>
 
-#include <systemc.h>
-#include <tlm.h>
+#include <systemc>
+#include <tlm>
 
 // Convenience Sockets:
 #include <tlm_utils/simple_initiator_socket.h>
@@ -35,7 +32,7 @@ protected:
     MemoryManager mm;
     int data[16];
     tlm::tlm_generic_payload *requestInProgress;
-    sc_event endRequest;
+    sc_core::sc_event endRequest;
     tlm_utils::peq_with_cb_and_phase<Initiator> peq;
 
 public:
@@ -58,7 +55,7 @@ protected:
     {
         tlm::tlm_generic_payload *trans;
         tlm::tlm_phase phase;
-        sc_time delay;
+        sc_core::sc_time delay;
 
         // Do nb_transports:
         for (int i = 0; i < N; i++)
@@ -88,11 +85,11 @@ protected:
             phase = tlm::BEGIN_REQ;
 
             // Timing annot. models processing time of initiator prior to call
-            delay = SC_ZERO_TIME;
+            delay = sc_core::SC_ZERO_TIME;
 
             cout << "\033[1;31m("
                  << name()
-                 << ")@"  << setfill(' ') << setw(12) << sc_time_stamp()
+                 << ")@"  << setfill(' ') << setw(12) << sc_core::sc_time_stamp()
                  << ": " << setw(12) << (cmd ? "Write to " : "Read from ")
                  << "Addr = " << setfill('0') << setw(8) << dec << adr
                  << " Data = " << "0x" << setfill('0') << setw(8)
@@ -125,14 +122,14 @@ protected:
             // In the case of TLM_ACCEPTED [1.1] we
             // will recv. a BW call in the future [1.2, 1.4]
 
-            wait(10, SC_NS);
+            wait(10, sc_core::SC_NS);
         }
     }
 
     // [1.2, 1.4]
     virtual tlm::tlm_sync_enum nb_transport_bw(tlm::tlm_generic_payload &trans,
                                                tlm::tlm_phase &phase,
-                                               sc_time &delay)
+                                               sc_core::sc_time &delay)
     {
         // Queue the transaction into the peq until
         // the annotated time has elapsed
@@ -166,7 +163,7 @@ protected:
 
             // Send final phase transition to target
             tlm::tlm_phase fw_phase = tlm::END_RESP;
-            sc_time delay = SC_ZERO_TIME;
+            sc_core::sc_time delay = sc_core::SC_ZERO_TIME;
             // [1.6]
             iSocket->nb_transport_fw(trans, fw_phase, delay); // Ignore return
 
@@ -189,13 +186,10 @@ protected:
 
         cout << "\033[1;31m("
              << name()
-             << ")@"  << setfill(' ') << setw(12) << sc_time_stamp()
+             << ")@"  << setfill(' ') << setw(12) << sc_core::sc_time_stamp()
              << ": " << setw(12) << (cmd ? "Check Write " : "Check Read ")
              << "Addr = " << setfill('0') << setw(8) << dec << adr
              << " Data = " << "0x" << setfill('0') << setw(8) << hex << *ptr
              << "\033[0m" << endl;
     }
 };
-
-
-#endif // INITIATOR_H

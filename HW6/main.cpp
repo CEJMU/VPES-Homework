@@ -7,7 +7,7 @@
 
 int sc_main (int argc, char ** argv)
 {
-    processor cpu0("cpu0", "stimuli1.txt", sc_time(1, SC_NS));
+    processor cpu0("cpu0", "stimuli1.txt", sc_core::sc_time(1, sc_core::SC_NS));
 
     // TODO: add your code here
 
@@ -25,7 +25,7 @@ int sc_main (int argc, char ** argv)
               << "-------------------------------------------"
               << '\n';
 
-    sc_start();
+    sc_core::sc_start();
 
     std::cout << '\n';
     return 0;

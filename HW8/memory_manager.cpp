@@ -34,8 +34,6 @@
  *    Matthias Jung
  */
 
-#include <iostream>
-
 #include "memory_manager.h"
 
 using namespace std;
@@ -46,25 +44,25 @@ MemoryManager::MemoryManager(): numberOfAllocations(0), numberOfFrees(0)
 
 MemoryManager::~MemoryManager()
 {
-    for (gp* payload: freePayloads) {
+    for (tlm::tlm_generic_payload* payload: freePayloads) {
         delete payload;
         numberOfFrees++;
     }
 }
 
-gp* MemoryManager::allocate()
+tlm::tlm_generic_payload* MemoryManager::allocate()
 {
     if (freePayloads.empty()) {
         numberOfAllocations++;
-        return new gp(this);
+        return new tlm::tlm_generic_payload(this);
     } else {
-        gp* result = freePayloads.back();
+        tlm::tlm_generic_payload* result = freePayloads.back();
         freePayloads.pop_back();
         return result;
     }
 }
 
-void MemoryManager::free(gp* payload)
+void MemoryManager::free(tlm::tlm_generic_payload* payload)
 {
     payload->reset(); //clears all extensions
     freePayloads.push_back(payload);

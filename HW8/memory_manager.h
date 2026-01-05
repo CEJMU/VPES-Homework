@@ -34,27 +34,22 @@
  *    Matthias Jung
  */
 
-#ifndef MEMORY_MANAGER_H
-#define MEMORY_MANAGER_H
+#pragma once
 
 #include <vector>
 
-#include <tlm.h>
-
-typedef tlm::tlm_generic_payload gp;
+#include <tlm>
 
 class MemoryManager : public tlm::tlm_mm_interface
 {
 public:
     MemoryManager();
     virtual ~MemoryManager();
-    virtual gp* allocate();
-    virtual void free(gp* payload);
+    virtual tlm::tlm_generic_payload* allocate();
+    virtual void free(tlm::tlm_generic_payload* payload);
 
 private:
     unsigned int numberOfAllocations;
     unsigned int numberOfFrees;
-    std::vector<gp*> freePayloads;
+    std::vector<tlm::tlm_generic_payload*> freePayloads;
 };
-
-#endif // MEMORY_MANAGER_H
